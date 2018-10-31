@@ -3,9 +3,10 @@ width:100%;
 min-width:1280px;  
 } 
 
- .container-fluid{  
+.container-fluid{  
 width:100%;  
 min-width:1280px;  
+//border: 5px solid gray;
 } 
 .container.login{
 //  background: #054bd1;
@@ -45,7 +46,7 @@ min-width:1280px;
   width:100%;
   position: absolute;
   padding: 50px;
-//  border: 5px solid gray;
+  //border: 5px solid gray;
   padding-left: 280px;
 }
 
@@ -68,10 +69,4 @@ min-width:1280px;
   font-size: 15px;
   font-family: Georgia;
 
-}
-
-#timeDisplay{
-  position:absolute;
-  bottom:0px;
-  left:50px;
 }

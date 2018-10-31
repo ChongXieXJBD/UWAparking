@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var exec = require('child_process').exec;
 
 var con_pool = mysql.createPool({
 	host: "106.14.213.85",
@@ -53,8 +54,31 @@ module.exports = router;
 //get history information
 
 router.get("/history", function(req, res, next){
-	res.send("history")
-
+	//current working directory is located in heat_map_visualization instead of static path "public"
+	exec('python3 ./public/python/sql_history.py', function(error,stdout,stderr){
+		if(error){
+			console.log("error, can not execute script");
+		}else{
+			console.log("successfully execute script");
+			//var data = JSON.parse(stdout);
+            //console.log(stdout);
+		}
+	});
+	con_pool.getConnection(function(err,dbconnection){
+		if(err) throw err;
+		var parkinglots_record_query="SELECT * FROM parkinglots_status";
+		dbconnection.query(parkinglots_record_query, function(err, result){
+			if(err){
+				console.log('[query]-:'+err);
+			}else{
+				function render_function(){res.render("history",{data:result});}
+				//Give some time for generating bart charts
+				setTimeout(render_function,5000);
+				console.log(result);
+			}
+		dbconnection.release();
+		});
+	});
 });
 
 router.get("/del", function(req, res, next){
@@ -160,6 +184,8 @@ router.get("/edit_submit", function(req, res, next){
 		})
 	});
 });
+
+
 
 
 module.exports = router;
