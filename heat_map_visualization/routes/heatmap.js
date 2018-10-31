@@ -12,7 +12,7 @@ var con_pool = mysql.createPool({
 
 });
 
-var parking_general_query = "SELECT * from parkinglots_general";
+var parking_general_query = "SELECT * FROM parkinglots_general";
 
 
 
@@ -33,18 +33,26 @@ router.get('/checking', function(req, res, next){
 
 //jump back to heat map href
 
-router.get('/adminview', function(req, res, next)
-{
-	res.render('adminview');
-
+router.get('/adminview', function(req, res, next){
+        con_pool.getConnection(function(err, dbconnection){
+		if (err) throw err;
+		dbconnection.query(parking_general_query, function(err, result){
+			if(err){
+				console.log('[query]-:'+err);
+			}else{
+				res.render("adminview",{test:"test",data: result});
+				//console.log(result[0].represent_loc);
+			}
+		dbconnection.release();
+		})
+	});
 });
 
 module.exports = router;
 
 //get history information
 
-router.get("/history", function(req, res, next)
-{
+router.get("/history", function(req, res, next){
 	res.send("history")
 
 });
@@ -62,18 +70,19 @@ router.get("/del", function(req, res, next){
     //console.log(del_index);
 	//res.redirect("checking");
 	//console.log(req.query.parking_name_index);
-	var del_query="DELETE FROM parkinglots_general where id="+del_index;
+	var del_query="DELETE FROM parkinglots_general WHERE id="+del_index;
 	//console.log(del_query);
 	con_pool.getConnection(function(err, dbconnection){
 		if (err) throw err;
 		dbconnection.query(del_query, function(err, result){
 			if(err){
 				console.log('[query]-:'+err);
-				res.send("operation failed!");
+				res.send("operation failed!<br><a href='checking'>Go back to checking page</a>");
 			}else{
-				res.send("you have deleted a record!");
+				res.send("you have deleted a record!<br><a href='checking'>Go back to checking page</a>");
 
 			}
+		dbconnection.release();
 		})
 	});
 
@@ -88,7 +97,7 @@ router.get("/edit", function(req, res, next){
     		       
     	            }
             }
-   var edit_query="select * from parkinglots_general where id="+edit_index;
+   var edit_query="SELECT * FROM parkinglots_general WHERE id="+edit_index;
 
     con_pool.getConnection(function(err, dbconnection){
     	if (err) throw err;
@@ -101,53 +110,53 @@ router.get("/edit", function(req, res, next){
     			res.render("update",{data:result});
     			console.log(result);
     		}
+    	dbconnection.release();
     	});
     });
 });
 
-router.get("/create", function(req, res, next)
-{
+router.get("/create", function(req, res, next){
 	res.render("create");
 
 });
 
-router.get("/submit", function(req, res, next)
-{   
+router.get("/submit", function(req, res, next){ 
 	//var admin_insert_query = "insert into parkinglots_general (`Name`,`Capacity`) values (null,?,?,?,?,?,?,?,?,?,?)"
-	var admin_insert_query = "insert into parkinglots_general values (null,?,?,?,?,?,?,?,?,?,?)"
-	value = [req.query.p_name, req.query.p_nw,req.query.p_se, req.query.p_sw, req.query.p_ne,req.query.p_capacity,(req.query.p_capacity/2),(req.query.p_capacity/2),req.query.p_rl,req.query.p_ticket];
+	var admin_insert_query = "INSERT INTO parkinglots_general VALUES (null,?,?,?,?,?,?,?,?,?,?)"
+	value = [req.query.p_name, req.query.p_nw,req.query.p_se, req.query.p_sw, req.query.p_ne,req.query.p_capacity,req.query.p_ypermmission,req.query.p_rpermmission,req.query.p_rl,req.query.p_ticket];
 	
 	con_pool.getConnection(function(err, dbconnection){
 		if (err) throw err;
 		dbconnection.query(admin_insert_query,value, function(err, result){
 			if(err){
 				console.log('[query]-:'+err);
-				res.send("operation failed!");
+				res.send("operation failed!<br><a href='checking'>Go back to checking page</a>");
 			}else{
-				res.send("you have added a new record!");
+				res.send("you have added a new record!<br><a href='checking'>Go back to checking page</a>");
 
 			}
+		dbconnection.release();
 		})
 	});
 });
 
 
-router.get("/edit_submit", function(req, res, next)
-{   
+router.get("/edit_submit", function(req, res, next){   
 	//var admin_insert_query = "insert into parkinglots_general (`Name`,`Capacity`) values (null,?,?,?,?,?,?,?,?,?,?)"
 	var admin_update_query = "UPDATE parkinglots_general SET `name`=?, `CoorNW`=?, `CoorSE`=?, `CoorSW`=?, `CoorNe`=?, `Capacity`=?, `yellow_permission`=?, `red_permission`=?, `represent_loc`=?, `tickets`=? WHERE `id`=?";
-	value = [req.query.p_name, req.query.p_nw,req.query.p_se, req.query.p_sw, req.query.p_ne,req.query.p_capacity,(req.query.p_capacity/2),(req.query.p_capacity/2),req.query.p_rl,req.query.p_ticket,req.query.p_id];
-	
+	value = [req.query.p_name, req.query.p_nw,req.query.p_se, req.query.p_sw, req.query.p_ne,req.query.p_capacity,req.query.p_ypermmission,req.query.p_rpermmission,req.query.p_rl,req.query.p_ticket,req.query.p_id];
+	console.log(req.query);
 	con_pool.getConnection(function(err, dbconnection){
 		if (err) throw err;
 		dbconnection.query(admin_update_query,value, function(err, result){
 			if(err){
 				console.log('[query]-:'+err);
-				res.send("operation failed!");
+				res.send("operation failed!<br><a href='checking'>Go back to checking page</a>");
 			}else{
-				res.send("you have updated a record!");
+				res.send("you have updated a record!<br><a href='checking'>Go back to checking page</a>");
 
 			}
+		dbconnection.release();
 		})
 	});
 });

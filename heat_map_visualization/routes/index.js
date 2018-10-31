@@ -26,7 +26,7 @@ var con_pool = mysql.createPool({
 
 //if error then throw it
 // render result as data (json format)
-var user_io = 'SELECT * FROM parking_record JOIN parkinglots_general WHERE parking_record.parkinglots_id=parkinglots_general.id;';
+var user_io = 'SELECT name,represent_loc,tickets from parkinglots_general JOIN parking_record WHERE name=parkinglots_name;';
 
 con_pool.getConnection(function(err, dbconnection){
 	if (err) throw err;
@@ -43,7 +43,7 @@ con_pool.getConnection(function(err, dbconnection){
 				title:"test json", //test
 				data: result
 			});
-            
+            //console.log(result[0].represent_loc);
 		    });
 	    });
 	dbconnection.release();

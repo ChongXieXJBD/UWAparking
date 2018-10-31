@@ -11,7 +11,44 @@
           data: getPoints(),
           map: map
         });
-      //polygon?
+
+      var contentString_9p= '<div id="content_9p">'+
+          '<div id="parkNotice">'+
+          '</div>'+
+          '<div id="bodyContent">'+
+          'CSSE south park lots, Yellow permission: 20 Red permission: 20 Ticket: 8:00am-5:00pm'+
+          '</div>'+
+          '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+        content:contentString_9p
+      });
+
+
+      
+
+
+      var marker = { lat: -31.977570,  lng:115.816864};
+      var marker_arr=[];
+
+      var icon_parking = {
+       url: "/image/parking.png",
+       scaledSize: new google.maps.Size(30,30) 
+      };
+
+      var marker_display = new google.maps.Marker({
+        position: marker,
+        map: map,
+        title :' csse parking area',
+        icon: icon_parking
+      });
+
+
+      marker_display.addListener('click', function(){
+      
+      infowindow.open(map, marker_display);
+
+      });
 
       }
 
@@ -48,29 +85,11 @@
       }
 
 
-      function randomNum(minNum,maxNum){ 
-        switch(arguments.length){ 
-        case 1: 
-            return parseInt(Math.random()*minNum+1,10); 
-            break; 
-        case 2: 
-            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
-            break; 
-        default: 
-            return 0; 
-            break; 
-            } 
-      } 
-
-
-
       // Heatmap data from db
       //Google Points API
       //Heatmap data: example Points
       //function getPoints() {
       //  return [
       //    new google.maps.LatLng(37.782551, -122.445368)]
-
-      
 
       

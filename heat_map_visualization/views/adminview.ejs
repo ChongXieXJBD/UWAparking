@@ -5,34 +5,107 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>UWA parking heat map></title>   <!-- basic config for initilization -->
-    <link rel="stylesheet" type="text/css" href="./css/map.css" /> <!-- map css source -->
-    <script type="text/javascript" src="./js/user.js"></script>
-    <script>
-    function getPoints() {
-            points= [];  // initial arrary
-        
-          <% for ( var i =0; i<data.length; i++) {%>   //ejs variable and render's result
-            
-            point_obj= new google.maps.LatLng(<%=data[i].Lat%>,<%=data[i].Lng%>);
-            points.push(point_obj);  //let points collect all point_obj
-         
-          <% } %>
-         
-          return  points;  //render it to the map
+    <title>UWA parking heat map admin view></title>   <!-- basic config for initilization -->
+    <link rel="stylesheet" type="text/css" href="../css/map.css" /> <!-- map css source -->
+    <script type="text/javascript">
+     var map
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: {lat: -31.980624, lng: 115.818479},
+          mapTypeId: 'roadmap'
+        });
+      
+
+
+      
+
+
+      //var marker = { lat: -31.977570,  lng:115.816864};
+      var marker_arr=[];
+      var marker_obj_arr=[];
+      <% for ( var i =0; i<data.length; i++) {%>
+          marker_arr.push(new google.maps.LatLng(<%=data[i].represent_loc%>));
+      <% } %>
+
+      var icon_parking = {
+       url: "/image/parking.png",
+       scaledSize: new google.maps.Size(30,30) 
+      };
+
+      <% for ( var i =0; i<data.length; i++) {%>
+           var marker_display = new google.maps.Marker({
+           position: marker_arr[<%=i%>],
+           map: map,
+           title :'parking area',
+           icon: icon_parking
+           });
+
+           marker_obj_arr.push(marker_display);
+
+           
+      <% } %>
+
+
+      //When function is called, the loop is fnished, so you use "var i=0", it causes closure problem
+      //Two solutions:1. using Closure 2.ES6
+      /*for (var i = 0; i <= list_obj.length; i++) {
+          list_obj[i].onclick = (function(i){
+              return function() {  alert(i); }
+          })(i);  
+        } 
+
+      for (let i = 0; i <= list_obj.length; i++) {        
+          list_obj[i].onclick = function() {      
+             alert(i);      
+          }  
+        }*/
+
+      //In this case, I use ES6 method (let i=0)
+      //This is for display brief information of parking lots, onclick event
+
+       <% for ( let i =0; i<data.length; i++) {%>
+          marker_obj_arr[<%=i%>].addListener('click', function(){
+          var contentString_9p= '<div id="content_9p">'+
+          '<div id="parkNotice">'+
+          '</div>'+
+          '<div id="bodyContent">'+
+          '<%=data[i].name%>, Yellow permission: <%=data[i].yellow_permission%> Red permission: <%=data[i].red_permission%> Ticket: 8:00am-5:00pm'+
+          '</div>'+
+          '</div>';
+          var contentString_free= '<div id="content_9p">'+
+          '<div id="parkNotice">'+
+          '</div>'+
+          '<div id="bodyContent">'+
+          '<%=data[i].name%>, Yellow permission: <%=data[i].yellow_permission%> Red permission: <%=data[i].red_permission%> Ticket: Free'+
+          '</div>'+
+          '</div>';
+          var infowindow_9p = new google.maps.InfoWindow({
+             content:contentString_9p
+          });
+          var infowindow_free = new google.maps.InfoWindow({
+             content:contentString_free
+          });
           
-        //];
-      }</script>
+          if ("<%=data[i].tickets%>"=="Yes"){
+              infowindow_9p.open(map, marker_obj_arr[<%=i%>]);
+              }else{
+              infowindow_free.open(map, marker_obj_arr[<%=i%>]);
+              }
+              });
+
+        <%}%>
+
+      
+
+      }
+    </script>
     
   </head>
 
   <body>
-    <div id="floating-panel">
-      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-      <button onclick="changeGradient()">Change gradient</button>
-      <button onclick="changeRadius()">Change radius</button>
-      <button onclick="changeOpacity()">Change opacity</button>
-    </div>
+    
     <div id="map"></div>
     
     <script async defer

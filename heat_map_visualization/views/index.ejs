@@ -13,8 +13,19 @@
             points= [];  // initial arrary
         
           <% for ( var i =0; i<data.length; i++) {%>   //ejs variable and render's result
+            lat_random=randomNum(-100,100)/1000000;
+            lng_random=randomNum(-100,100)/1000000;
             
-            point_obj= new google.maps.LatLng(<%=data[i].Lat%>,<%=data[i].Lng%>);
+            arr_lat_lng="<%=data[i].represent_loc%>";
+            
+            arr_lat_lng=arr_lat_lng+"";
+            arr_lat_lng=arr_lat_lng.split(",");
+            
+            arr_lat_lng[0]=parseFloat(arr_lat_lng[0])+lat_random;
+            arr_lat_lng[1]=parseFloat(arr_lat_lng[1])+lng_random;
+            //alert(arr_lat_lng);
+            //point_obj= new google.maps.LatLng(<%=data[i].represent_loc%>);
+            point_obj= new google.maps.LatLng(arr_lat_lng[0],arr_lat_lng[1]);
             points.push(point_obj);  //let points collect all point_obj
          
           <% } %>
