@@ -1,0 +1,8 @@
+{
+  "platformName": "Android",
+  "platformVersion": "6.0",
+  "deviceName": "OPPO R9s",
+  "appActivity": ".MainActivity",
+  "appPackage": "com.example.test.myapplication",
+  "autoGrantPermissions": "true"
+}
