@@ -13,7 +13,7 @@
             points= [];  // initial arrary
         
           <% for ( var i =0; i<data.length; i++) {%>   //ejs variable and render's result
-            lat_random=randomNum(-100,100)/1000000;
+            lat_random=randomNum(-100,100)/1000000;    //in order to render seperated points, 
             lng_random=randomNum(-100,100)/1000000;
             
             arr_lat_lng="<%=data[i].represent_loc%>";
