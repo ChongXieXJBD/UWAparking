@@ -1,0 +1,12 @@
+[Unit]
+Description=code in server to receive data from user and interact with mysql
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/root/design/start_uwaparking.sh
+ExecStop=/root/design/stop_uwaparking.sh
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
