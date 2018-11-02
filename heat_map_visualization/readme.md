@@ -1,6 +1,17 @@
 Designed by UWA parking solution group
 Ver 1.0
 
+Connect to the instance:
+$ssh guest@106.14.213.85
+password:uwawelcome
+
+then
+
+$mysql -u root
+no password for root, just press enter
+Now you can enter "uwa_parking" db and check CRUD operation result via admin management system.
+
+
 Functions
 1. Heat map visualization for parking forecast (Student and staff view)
 2. Parking lots management system including CRUD and admin view
