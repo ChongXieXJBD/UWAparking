@@ -5,7 +5,10 @@ var mysql = require('mysql');
 var exec = require('child_process').exec;
 
 var con_pool = mysql.createPool({
-	host: "106.14.213.85",
+	//if you deploy your node.js server and db together
+	//please remeber to change host into "host:localhost"
+	host: "106.14.213.85",  
+	//the administrator use root account.
 	user: "root",
 	password: "",
 	database: "uwa_parking",
@@ -26,7 +29,7 @@ router.get('/checking', function(req, res, next){
 		//title:"test json",
 		data: result
 	    });
-	//console.log(result);
+	
 	dbconnection.release();
     });
     });
@@ -42,7 +45,7 @@ router.get('/adminview', function(req, res, next){
 				console.log('[query]-:'+err);
 			}else{
 				res.render("adminview",{test:"test",data: result});
-				//console.log(result[0].represent_loc);
+				
 			}
 		dbconnection.release();
 		})
@@ -81,9 +84,12 @@ router.get("/history", function(req, res, next){
 	});
 });
 
+//delete the parking lots information
+
 router.get("/del", function(req, res, next){
 	console.log(req.query);
     var del_index_arr=req.query.parking_name_index;
+    
     for (var i=0; i<del_index_arr.length;i++){
     	if (del_index_arr[i].indexOf("del")>-1){
     		var del_index=del_index_arr[i].replace("del","");
@@ -91,11 +97,8 @@ router.get("/del", function(req, res, next){
     	}
     }
 
-    //console.log(del_index);
-	//res.redirect("checking");
-	//console.log(req.query.parking_name_index);
 	var del_query="DELETE FROM parkinglots_general WHERE id="+del_index;
-	//console.log(del_query);
+	
 	con_pool.getConnection(function(err, dbconnection){
 		if (err) throw err;
 		dbconnection.query(del_query, function(err, result){
@@ -109,8 +112,9 @@ router.get("/del", function(req, res, next){
 		dbconnection.release();
 		})
 	});
+});
 
-	});
+//edit the parking lots information
 
 router.get("/edit", function(req, res, next){
    var edit_index_arr=req.query.parking_name_index;
@@ -139,10 +143,14 @@ router.get("/edit", function(req, res, next){
     });
 });
 
+//create a new parking lots record
+
 router.get("/create", function(req, res, next){
 	res.render("create");
 
 });
+
+//handle create a new parking lots request
 
 router.get("/submit", function(req, res, next){ 
 	//var admin_insert_query = "insert into parkinglots_general (`Name`,`Capacity`) values (null,?,?,?,?,?,?,?,?,?,?)"
@@ -164,6 +172,8 @@ router.get("/submit", function(req, res, next){
 	});
 });
 
+
+//handle edit request
 
 router.get("/edit_submit", function(req, res, next){   
 	//var admin_insert_query = "insert into parkinglots_general (`Name`,`Capacity`) values (null,?,?,?,?,?,?,?,?,?,?)"

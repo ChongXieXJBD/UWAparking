@@ -1,3 +1,7 @@
+/* Designed by Chong Xie 21885263
+this is for administrator management page style.
+some styles have been designed but not used in page yet
+like login windows styles, hope it will be useful for future design*/
  .container{  
 width:100%;  
 min-width:1280px;  
@@ -9,14 +13,14 @@ min-width:1280px;
 //border: 5px solid gray;
 } 
 .container.login{
-//  background: #054bd1;
+/*  background: #054bd1; */
   height: 70vh;
 }
 
 
 
 .container.login .row{
-//  background: #021d51;
+/*  background: #021d51; */
   height: 60vh;
 
 }
@@ -46,7 +50,7 @@ min-width:1280px;
   width:100%;
   position: absolute;
   padding: 50px;
-  //border: 5px solid gray;
+  /*border: 5px solid gray; */
   padding-left: 280px;
 }
 

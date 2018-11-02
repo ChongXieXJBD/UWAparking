@@ -5,20 +5,15 @@ var mysql = require('mysql');
 //Connection Pool method
 
 var con_pool = mysql.createPool({
+	//if you deploy your node.js server and db together
+	//please remeber to change host into "host:localhost"
 	host: "106.14.213.85",
-	user: "root",
-	password: "",
+	user: "guest", // privilegs control
+	password: "uwaquery",
 	database: "uwa_parking",
 	port:"3306"
 
 });
-
-//var con = mysql.createConnection({
-//	host: "106.14.213.85",
-//	user: "root",
-//	password: "X30c1993",
-//	database: "uwaparking"
-//}); tradinational connection
 
 
 //sql statement execute
