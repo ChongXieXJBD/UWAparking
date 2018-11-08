@@ -1,9 +1,7 @@
 Designed by UWA parking solution group
 Ver 1.0
 
-Connect to the instance:
-$ssh guest@106.14.213.85
-password:uwawelcome
+You may connect to your own instance or use the instance in the system delivery
 
 then
 
